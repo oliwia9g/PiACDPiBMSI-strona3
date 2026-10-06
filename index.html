@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Landsat 8 • Kraków i okolice</title>
+    <link rel="stylesheet" href="vendor/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Landsat 8: Kraków i okolice</h1>
+        <p>7 sierpnia 2013 • wskaźniki pokrycia terenu • laboratorium geoinformatyki</p>
+    </header>
+
+    <main>
+        <div id="map" aria-label="Interaktywna mapa wskaźników"></div>
+        <aside>
+            <h2>Warstwa wynikowa</h2>
+            
+            <label for="layer">Wybór wskaźnika</label>
+            <select id="layer">
+                <option>NDVI</option>
+                <option>NDBI</option>
+                <option>MNDWI</option>
+                <option>RGB</option>
+            </select>
+            
+            <label for="opacity">Przezroczystość warstwy</label>
+            <input id="opacity" type="range" min="0" max="1" step="0.05" value="0.85">
+            
+            <div id="legend">
+                <div id="ramp" class="ramp"></div>
+                <div class="ticks">
+                    <span>−1</span>
+                    <span>0</span>
+                    <span>1</span>
+                </div>
+            </div>
+            
+            <p id="explain"></p>
+            <button id="reset">Cały obszar</button>
+            <p id="state">Wczytywanie mapy…</p>
+            
+            <p class="note">Przezroczyste piksele oznaczają brak ważnej obserwacji. Skala kolorów obejmuje −1 do 1. Pełne wartości analityczne zapisano w GeoTIFF.</p>
+            <p class="note">Zbliżenie powyżej poziomu 12 powiększa istniejące kafelki. Dane źródłowe mają rozdzielczość 30 m.</p>
+            <p class="note">Podkład OpenStreetMap wymaga internetu. Warstwy wynikowe oraz biblioteka mapy są lokalne.</p>
+            <p class="note"><a href="summary.json">Statystyki obliczeń</a><br>Dane: USGS/EROS, Landsat Collection 1. Granica pochodzi z projektu dydaktycznego.</p>
+        </aside>
+    </main>
+
+    <script src="vendor/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font: 16px system-ui, sans-serif;
+    color: #173541;
+    background: #f5f7f6;
+}
+
+header {
+    padding: 16px 24px;
+    background: #133e4a;
+    color: white;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0 0 4px;
+}
+
+header p {
+    margin: 0;
+    font-size: 14px;
+    color: #d8e7e8;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    height: calc(100vh - 89px);
+    min-height: 450px;
+}
+
+#map {
+    height: 100%;
+    background: #e6eceb;
+}
+
+aside {
+    padding: 22px;
+    overflow: auto;
+}
+
+aside h2 {
+    font-size: 18px;
+    margin-top: 0;
+}
+
+select, input {
+    width: 100%;
+    margin: 8px 0 20px;
+}
+
+label {
+    font-weight: 650;
+}
+
+button {
+    padding: 9px 14px;
+    background: #133e4a;
+    color: white;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ramp {
+    height: 18px;
+    margin-top: 12px;
+}
+
+.ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.note {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #45616b;
+}
+
+#state {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+a {
+    color: #066776;
+}
+
+@media (max-width: 700px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+    #map {
+        height: 62vh;
+        min-height: 350px;
+    }
+    aside {
+        padding: 16px;
+    }
+    header {
+        padding: 12px 16px;
+    }
+    h1 {
+        font-size: 20px;
+    }
+}
