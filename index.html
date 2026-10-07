@@ -14,7 +14,7 @@
             <img class="logo" src="logo.svg" alt="" width="46" height="46">
             <div>
                 <h1>Satelitarne wskaźniki pokrycia terenu</h1>
-                <p><span id="city">wpisac miatsa</span> • Sentinel-2 • Grupa 3</p>
+                <p><span id="city">Kraków</span> • Sentinel-2 • Grupa 3</p>
             </div>
         </div>
         <div class="header-actions">
@@ -29,9 +29,17 @@
         <aside>
             <section>
                 <h2>Warstwa wynikowa</h2>
+
+                <label for="city-select">Miasto / obszar analizy</label>
+                <select id="city-select">
+                    <option value="krakow">Kraków</option>
+                    <option value="gdansk">Gdańsk</option>
+                    <option value="tarnow">Tarnów</option>
+                </select>
+
                 <div id="layer-chips" class="chips" role="group" aria-label="Szybki wybór wskaźnika"></div>
  
-               <label for="layer">Wybór wskaźnika</label>
+                <label for="layer">Prawa strona — wskaźnik</label>
                 <select id="layer">
                     <option>NDVI</option>
                     <option>NDBI</option>
@@ -40,6 +48,15 @@
                     <option>NDMI</option>
                     <option>RGB</option>
                 </select>
+
+                <div class="date-row" aria-label="Okres prawej strony">
+                    <label>Rok
+                        <select id="right-year"></select>
+                    </label>
+                    <label>Miesiąc
+                        <select id="right-month"></select>
+                    </label>
+                </div>
  
                 <label for="compare">Lewa strona suwaka</label>
                 <select id="compare">
@@ -52,6 +69,15 @@
                     <option value="NDMI">NDMI</option>
                     <option value="RGB">RGB</option>
                 </select>
+
+                <div id="left-date-row" class="date-row" aria-label="Okres lewej strony">
+                    <label>Rok
+                        <select id="left-year"></select>
+                    </label>
+                    <label>Miesiąc
+                        <select id="left-month"></select>
+                    </label>
+                </div>
  
                 <label for="opacity">Przezroczystość warstwy <output id="opacity-out">100%</output></label>
                 <input id="opacity" type="range" min="0" max="1" step="0.05" value="1">
@@ -75,38 +101,35 @@
                 <h2>Statystyki widoku</h2>
                 <canvas id="hist" width="560" height="180" aria-label="Histogram wartości w bieżącym widoku"></canvas>
                 <dl id="stats" class="stats"></dl>
-                <p class="note">Liczone na żywo z pikseli widocznych na mapie. Wartości są przybliżone – odtwarzane z barw kafelków.</p>
+                <p class="note">Liczone na żywo z pikseli obrazu pobranego z Copernicus Data Space. Wartości są przybliżone – odtwarzane z barw wizualizacji.</p>
                 <dl id="summary" class="stats" hidden></dl>
             </section>
  
             <section>
                 <h2>Podkład</h2>
                 <div id="basemaps" class="chips" role="group" aria-label="Wybór podkładu"></div>
-                <label class="check"><input id="aoi-toggle" type="checkbox" checked> Granica obszaru analizy</label>
+                <label class="check"><input id="aoi-toggle" type="checkbox" checked> Granica administracyjna miasta (PRG)</label>
             </section>
  
-            <section>
+            <section id="places-section">
                 <h2>Ciekawe miejsca</h2>
                 <div id="places" class="places"></div>
                 <button id="reset">Wyśrodkuj mapę</button>
             </section>
  
             <section>
-                <p class="note"><strong>Kliknij mapę</strong>, aby zobaczyć wartości wszystkich wskaźników w punkcie. Klawisze <kbd>1</kbd>–<kbd>6</kbd> przełączają warstwy, <kbd>F</kbd> włącza pełny ekran.</p>
+                <p class="note"><strong>Kliknij mapę</strong>, aby zobaczyć wartości wszystkich wskaźników w punkcie dla okresu po tej stronie suwaka. Klawisze <kbd>1</kbd>–<kbd>6</kbd> przełączają prawą warstwę, <kbd>F</kbd> włącza pełny ekran.</p>
                 <p class="note">Skala barw obejmuje zakres od −1 do 1. Przezroczyste piksele oznaczają brak ważnych obserwacji (np. chmury lub brak danych).</p>
-                <p class="note"><a href="summary.json">Statystyki obliczeń</a></p>
             </section>
         </aside>
     </main>
  
     <footer>
-        <span><strong>Dane satelitarne:</strong> Sentinel-2 (program Copernicus, ESA) – zawiera zmodyfikowane dane Copernicus Sentinel. Wskaźniki: opracowanie własne.</span>
+        <span><strong>Dane satelitarne:</strong> Sentinel-2 L2A (Copernicus Data Space / Sentinel Hub Process API). Wskaźniki: obliczane dynamicznie.</span>
         <span><strong>Podkłady:</strong> © OpenStreetMap, © Esri</span>
     </footer>
  
     <script src="vendor/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/digidem/leaflet-side-by-side/leaflet-side-by-side.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
- 

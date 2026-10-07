@@ -376,3 +376,151 @@ a:hover { text-decoration: underline; }
     #map { height: 60vh; min-height: 380px; }
     aside { border-left: 0; overflow: visible; }
 }
+/* ---------- Analiza wieloczasowa / Copernicus ---------- */
+.date-row {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 8px;
+    margin: -2px 0 4px;
+}
+.date-row label {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.date-row select { margin-bottom: 10px; }
+.date-row.disabled { opacity: .45; }
+.date-row.disabled select { cursor: not-allowed; }
+
+#map {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dwie warstwy PNG są zwykłymi elementami DOM nad mapą Leaflet. */
+.temporal-root {
+    position: absolute;
+    inset: 0;
+    z-index: 450;
+    pointer-events: none;
+    overflow: hidden;
+}
+.temporal-clip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+.temporal-img {
+    position: absolute;
+    display: block;
+    max-width: none;
+    max-height: none;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Własny suwak: szeroki niewidoczny hitbox, żeby Leaflet nie łapał przeciągania. */
+.swipe-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 52px;
+    margin-left: -26px;
+    z-index: 950;
+    pointer-events: auto;
+    cursor: ew-resize;
+    touch-action: none;
+    user-select: none;
+    outline: none;
+    background: transparent;
+}
+.divider-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 0 0 1px rgba(0,0,0,.25), 0 0 9px rgba(0,0,0,.4);
+}
+.divider-knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff;
+    color: #183042;
+    border: 1px solid rgba(0,0,0,.2);
+    box-shadow: 0 2px 10px rgba(0,0,0,.35);
+    font-weight: 900;
+    font-size: 18px;
+}
+.swipe-divider.dragging .divider-knob,
+.swipe-divider:focus-visible .divider-knob {
+    outline: 3px solid rgba(45,212,191,.85);
+    outline-offset: 2px;
+}
+
+/* Nadpisanie położenia istniejących etykiet stron. */
+.temporal-label-left { left: 60px !important; right: auto !important; z-index: 900; }
+.temporal-label-right { right: 12px !important; left: auto !important; z-index: 900; }
+
+.temporal-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1100;
+    display: grid;
+    place-content: center;
+    grid-auto-flow: column;
+    gap: 14px;
+    align-items: center;
+    background: rgba(7,18,28,.58);
+    backdrop-filter: blur(2px);
+    color: #fff;
+}
+.temporal-loading[hidden] { display: none; }
+.temporal-loading small {
+    display: block;
+    margin-top: 4px;
+    color: #c4d2dd;
+    font-size: 12px;
+}
+.temporal-spinner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,.25);
+    border-top-color: var(--accent);
+    animation: temporal-spin .8s linear infinite;
+}
+@keyframes temporal-spin { to { transform: rotate(360deg); } }
+
+.popup-loading { color: var(--muted); font-size: 12px; padding: 6px 0; }
+
+@media (max-width: 820px) {
+    .date-row { grid-template-columns: 1fr 1fr; }
+}
+
+
+.leaflet-popup-pane {
+    z-index: 2000 !important;
+}
+
+.leaflet-tooltip-pane {
+    z-index: 2000 !important;
+}
+
+.leaflet-popup {
+    z-index: 2001 !important;
+}
