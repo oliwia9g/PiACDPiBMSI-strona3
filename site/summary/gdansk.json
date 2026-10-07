@@ -1,0 +1,111 @@
+{
+  "city": "gdansk",
+  "aoi": "site/aoi/gdansk.geojson",
+  "product": "Sentinel-2 L1C",
+  "date": "2026-09-28",
+  "source": "Copernicus Browser, eksport TIFF 32-bit float (reflektancja)",
+  "files": {
+    "B02": "2026-09-28-00_00_2026-09-28-23_59_Sentinel-2_L1C_B02_(Raw).tiff",
+    "B03": "2026-09-28-00_00_2026-09-28-23_59_Sentinel-2_L1C_B03_(Raw).tiff",
+    "B04": "2026-09-28-00_00_2026-09-28-23_59_Sentinel-2_L1C_B04_(Raw).tiff",
+    "B08": "2026-09-28-00_00_2026-09-28-23_59_Sentinel-2_L1C_B08_(Raw).tiff",
+    "B11": "2026-09-28-00_00_2026-09-28-23_59_Sentinel-2_L1C_B11_(Raw).tiff"
+  },
+  "shape": [
+    2500,
+    2445
+  ],
+  "crs": "EPSG:4326",
+  "scale_factor": 1.0,
+  "add_offset": 0.0,
+  "nodata": -9999.0,
+  "inside_pixels": 1223324,
+  "valid_pixels": 1223316,
+  "rejected_fill": 0,
+  "rejected_out_of_range": 8,
+  "quality_mask": "granica AOI; odrzucone: wypełnienie (0 we wszystkich kanałach), NaN, reflektancja poza (0, 1]. Brak warstwy chmur w danych wejściowych.",
+  "index_bands": {
+    "NDVI": [
+      "B08",
+      "B04"
+    ],
+    "NDBI": [
+      "B11",
+      "B08"
+    ],
+    "MNDWI": [
+      "B03",
+      "B11"
+    ],
+    "NDWI": [
+      "B03",
+      "B08"
+    ],
+    "NDMI": [
+      "B08",
+      "B11"
+    ]
+  },
+  "indices": {
+    "NDVI": {
+      "count": 1223316,
+      "min": -0.5366795659065247,
+      "max": 0.8498727083206177,
+      "mean": 0.1850382387638092,
+      "median": 0.23559904098510742,
+      "outside_minus1_plus1": 0
+    },
+    "NDBI": {
+      "count": 1223316,
+      "min": -0.8241307735443115,
+      "max": 0.6809045076370239,
+      "mean": -0.3070929944515228,
+      "median": -0.32941943407058716,
+      "outside_minus1_plus1": 0
+    },
+    "MNDWI": {
+      "count": 1223316,
+      "min": -0.796625018119812,
+      "max": 0.9412550330162048,
+      "mean": 0.157633438706398,
+      "median": -0.1321621835231781,
+      "outside_minus1_plus1": 0
+    },
+    "NDWI": {
+      "count": 1223316,
+      "min": -0.7523350715637207,
+      "max": 0.6717467904090881,
+      "mean": -0.0411619171500206,
+      "median": -0.2142856866121292,
+      "outside_minus1_plus1": 0
+    },
+    "NDMI": {
+      "count": 1223316,
+      "min": -0.6809045076370239,
+      "max": 0.8241307735443115,
+      "mean": 0.3070929944515228,
+      "median": 0.32941943407058716,
+      "outside_minus1_plus1": 0
+    }
+  },
+  "bounds": [
+    [
+      54.2749189,
+      18.4294955
+    ],
+    [
+      54.4664485,
+      18.9502437
+    ]
+  ],
+  "minzoom": 9,
+  "maxzoom": 12,
+  "tiles": {
+    "RGB": 41,
+    "NDVI": 41,
+    "NDBI": 41,
+    "MNDWI": 41,
+    "NDWI": 41,
+    "NDMI": 41
+  }
+}
