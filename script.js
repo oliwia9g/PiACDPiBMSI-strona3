@@ -45,7 +45,7 @@ function change() {
     if (overlay) map.removeLayer(overlay);
     if (sideBySideControl) map.removeControl(sideBySideControl);
     
-    overlay = L.tileLayer('tiles_new/' + name + '_new/{z}/{x}/{y}.png', {
+    overlay = L.tileLayer('tiles_new_big/' + name + '_big/{z}/{x}/{y}.png', {
         tileSize: 256,
         tms: false,
         minZoom: cfg.minzoom,
