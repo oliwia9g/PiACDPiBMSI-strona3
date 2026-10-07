@@ -29,7 +29,7 @@ Plików sceny (TIFF) nie ma w repozytorium – folder `data/` jest w `.gitignore
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install rasterio numpy pillow
-.venv/bin/python src/sentinel_do_www.py gdansk      # albo: krakow
+.venv/bin/python src/sentinel_do_www.py gdansk      # albo: krakow, tarnow
 ```
 
 Nowe miasto: dane do `data/<id>/scene/`, granica do `site/aoi/<id>.geojson`, uruchom skrypt z `<id>` i dopisz wpis w `site/cities.js` (zasięg `bounds` wypisuje skrypt).
@@ -42,6 +42,6 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory site
 
 Otwórz http://127.0.0.1:8000/ (pierwsze miasto z `cities.js`) albo http://127.0.0.1:8000/?miasto=gdansk. Na serwer AGH wysyłamy zawartość `site/` (`scp -r site/. ...`), tak jak w konspekcie.
 
-Granica Gdańska pochodzi z OpenStreetMap (relacja 2597485, © OpenStreetMap contributors, ODbL) i obejmuje też część wód Zatoki Gdańskiej.
+Granica Gdańska pochodzi z OpenStreetMap (relacja 2597485, © OpenStreetMap contributors, ODbL) i obejmuje też część wód Zatoki Gdańskiej. Granica Tarnowa – też z OpenStreetMap (relacja 2882148).
 
 Zawiera zmodyfikowane dane Copernicus Sentinel 2026.

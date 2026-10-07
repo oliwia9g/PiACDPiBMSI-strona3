@@ -26,5 +26,17 @@ const CITIES = {
             { name: 'Martwa Wisła',       hint: 'woda • MNDWI',      ll: [54.3560, 18.6900], z: 13, layer: 'MNDWI' },
             { name: 'Wyspa Sobieszewska', hint: 'roślinność • NDVI', ll: [54.3420, 18.8300], z: 13, layer: 'NDVI' }
         ]
+    },
+    tarnow: {
+        name: 'Tarnów',
+        bounds: [[49.9855419, 20.8936142], [50.066589, 21.062345]],
+        places: [
+            { name: 'Rynek',               hint: 'zabudowa • NDBI',      ll: [50.0124, 20.9879], z: 15, layer: 'NDBI' },
+            { name: 'Grupa Azoty',         hint: 'przemysł • NDBI',      ll: [50.0225, 20.9206], z: 14, layer: 'NDBI' },
+            { name: 'Park Strzelecki',     hint: 'zieleń • NDVI',        ll: [50.0193, 20.9854], z: 15, layer: 'NDVI' },
+            { name: 'Park Piaskówka',      hint: 'zieleń • NDVI',        ll: [50.0315, 20.9791], z: 15, layer: 'NDVI' },
+            { name: 'Zakłady Mechaniczne', hint: 'przemysł • NDBI',      ll: [50.0078, 20.9574], z: 15, layer: 'NDBI' },
+            { name: 'Góra św. Marcina',    hint: 'obszary leśne • NDMI', ll: [49.9931, 21.0003], z: 14, layer: 'NDMI' }
+        ]
     }
 };
