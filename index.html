@@ -3,14 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Landsat 8 • Kraków i okolice</title>
+    <title>Landsat 8 & Sentinel-2 • Analiza</title>
     <link rel="stylesheet" href="vendor/leaflet.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Landsat 8: Kraków i okolice</h1>
-        <p>7 sierpnia 2013 • wskaźniki pokrycia terenu • laboratorium geoinformatyki</p>
+        <div>
+            <h1>Kraków i okolice: Wskaźniki pokrycia terenu</h1>
+            <p>Laboratorium geoinformatyki • Analiza zdjęć satelitarnych</p>
+        </div>
     </header>
 
     <main>
@@ -23,11 +25,13 @@
                 <option>NDVI</option>
                 <option>NDBI</option>
                 <option>MNDWI</option>
+                <option>NDWI</option>
+                <option>NDMI</option>
                 <option>RGB</option>
             </select>
             
             <label for="opacity">Przezroczystość warstwy</label>
-            <input id="opacity" type="range" min="0" max="1" step="0.05" value="0.85">
+            <input id="opacity" type="range" min="0" max="1" step="0.05" value="1">
             
             <div id="legend">
                 <div id="ramp" class="ramp"></div>
@@ -39,17 +43,18 @@
             </div>
             
             <p id="explain"></p>
-            <button id="reset">Cały obszar</button>
+            <button id="reset">Wyśrodkuj mapę</button>
             <p id="state">Wczytywanie mapy…</p>
             
-            <p class="note">Przezroczyste piksele oznaczają brak ważnej obserwacji. Skala kolorów obejmuje −1 do 1. Pełne wartości analityczne zapisano w GeoTIFF.</p>
-            <p class="note">Zbliżenie powyżej poziomu 12 powiększa istniejące kafelki. Dane źródłowe mają rozdzielczość 30 m.</p>
-            <p class="note">Podkład OpenStreetMap wymaga internetu. Warstwy wynikowe oraz biblioteka mapy są lokalne.</p>
-            <p class="note"><a href="summary.json">Statystyki obliczeń</a><br>Dane: USGS/EROS, Landsat Collection 1. Granica pochodzi z projektu dydaktycznego.</p>
+            <hr>
+            <p class="note">Skala barw obejmuje zakres od −1 do 1. Przezroczyste piksele oznaczają brak ważnych obserwacji (np. chmury lub brak danych).</p>
+            <p class="note"><strong>Podkład (lewa strona):</strong> OpenStreetMap.<br><strong>Warstwa (prawa strona):</strong> Dane satelitarne.</p>
+            <p class="note"><a href="summary.json">Statystyki obliczeń</a><br>Źródło danych: USGS/EROS.</p>
         </aside>
     </main>
 
     <script src="vendor/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/digidem/leaflet-side-by-side/leaflet-side-by-side.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
