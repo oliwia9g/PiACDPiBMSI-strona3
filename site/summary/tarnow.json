@@ -1,0 +1,111 @@
+{
+  "city": "tarnow",
+  "aoi": "site/aoi/tarnow.geojson",
+  "product": "Sentinel-2 L1C",
+  "date": "2026-09-30",
+  "source": "Copernicus Browser, eksport TIFF 32-bit float (reflektancja)",
+  "files": {
+    "B02": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B02_(Raw).tiff",
+    "B03": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B03_(Raw).tiff",
+    "B04": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B04_(Raw).tiff",
+    "B08": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B08_(Raw).tiff",
+    "B11": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B11_(Raw).tiff"
+  },
+  "shape": [
+    2194,
+    2500
+  ],
+  "crs": "EPSG:4326",
+  "scale_factor": 1.0,
+  "add_offset": 0.0,
+  "nodata": -9999.0,
+  "inside_pixels": 725497,
+  "valid_pixels": 725489,
+  "rejected_fill": 0,
+  "rejected_out_of_range": 8,
+  "quality_mask": "granica AOI; odrzucone: wypełnienie (0 we wszystkich kanałach), NaN, reflektancja poza (0, 1]. Brak warstwy chmur w danych wejściowych.",
+  "index_bands": {
+    "NDVI": [
+      "B08",
+      "B04"
+    ],
+    "NDBI": [
+      "B11",
+      "B08"
+    ],
+    "MNDWI": [
+      "B03",
+      "B11"
+    ],
+    "NDWI": [
+      "B03",
+      "B08"
+    ],
+    "NDMI": [
+      "B08",
+      "B11"
+    ]
+  },
+  "indices": {
+    "NDVI": {
+      "count": 725489,
+      "min": -0.38989508152008057,
+      "max": 0.8311612606048584,
+      "mean": 0.4780619442462921,
+      "median": 0.5308319926261902,
+      "outside_minus1_plus1": 0
+    },
+    "NDBI": {
+      "count": 725489,
+      "min": -0.6621823310852051,
+      "max": 0.5544524192810059,
+      "mean": -0.15396662056446075,
+      "median": -0.16449935734272003,
+      "outside_minus1_plus1": 0
+    },
+    "MNDWI": {
+      "count": 725489,
+      "min": -0.8847838640213013,
+      "max": 0.7871443629264832,
+      "mean": -0.2564540207386017,
+      "median": -0.28182438015937805,
+      "outside_minus1_plus1": 0
+    },
+    "NDWI": {
+      "count": 725489,
+      "min": -0.953593909740448,
+      "max": 0.5724353790283203,
+      "mean": -0.388264924287796,
+      "median": -0.4305555522441864,
+      "outside_minus1_plus1": 0
+    },
+    "NDMI": {
+      "count": 725489,
+      "min": -0.5544524192810059,
+      "max": 0.6621823310852051,
+      "mean": 0.15396662056446075,
+      "median": 0.16449935734272003,
+      "outside_minus1_plus1": 0
+    }
+  },
+  "bounds": [
+    [
+      49.9855419,
+      20.8936142
+    ],
+    [
+      50.066589,
+      21.062345
+    ]
+  ],
+  "minzoom": 9,
+  "maxzoom": 12,
+  "tiles": {
+    "RGB": 16,
+    "NDVI": 16,
+    "NDBI": 16,
+    "MNDWI": 16,
+    "NDWI": 16,
+    "NDMI": 16
+  }
+}
