@@ -12,15 +12,15 @@ const cfg = {
 };
 
 const INFO = {
-    NDVI:  { formula: 'NDVI = (NIR − RED) / (NIR + RED)',       thr: 0.4, thrLabel: 'gęsta roślinność (> 0,4)',
-             text: 'Wysokie wartości często odpowiadają gęstej, zdrowej roślinności.' },
-    NDBI:  { formula: 'NDBI = (SWIR1 − NIR) / (SWIR1 + NIR)',   thr: 0,   thrLabel: 'zabudowa / goła gleba (> 0)',
-             text: 'Dodatni wynik może wskazywać zabudowę lub odsłoniętą glebę.' },
-    MNDWI: { formula: 'MNDWI = (GREEN − SWIR1) / (GREEN + SWIR1)', thr: 0, thrLabel: 'woda (> 0)',
+    NDVI:  { formula: 'NDVI = (NIR − RED) / (NIR + RED)',       thr: 0.5, thrLabel: 'piksele z NDVI > 0,5',
+             text: 'Wyższe wartości często odpowiadają roślinności; interpretacja zależy od pokrycia terenu i daty.' },
+    NDBI:  { formula: 'NDBI = (SWIR1 − NIR) / (SWIR1 + NIR)',   thr: 0,   thrLabel: 'piksele z NDBI > 0',
+             text: 'Dodatni wynik może wskazywać zabudowę, ale też odsłoniętą glebę – porównaj z RGB i NDVI.' },
+    MNDWI: { formula: 'MNDWI = (GREEN − SWIR1) / (GREEN + SWIR1)', thr: 0, thrLabel: 'piksele z MNDWI > 0',
              text: 'Wskaźnik wspierający rozpoznawanie wód powierzchniowych w terenach zurbanizowanych.' },
-    NDWI:  { formula: 'NDWI = (GREEN − NIR) / (GREEN + NIR)',   thr: 0,   thrLabel: 'woda (> 0)',
+    NDWI:  { formula: 'NDWI = (GREEN − NIR) / (GREEN + NIR)',   thr: 0,   thrLabel: 'piksele z NDWI > 0',
              text: 'Wskaźnik służący do detekcji zbiorników wodnych.' },
-    NDMI:  { formula: 'NDMI = (NIR − SWIR1) / (NIR + SWIR1)',   thr: 0.2, thrLabel: 'wysoka wilgotność (> 0,2)',
+    NDMI:  { formula: 'NDMI = (NIR − SWIR1) / (NIR + SWIR1)',   thr: 0.2, thrLabel: 'piksele z NDMI > 0,2',
              text: 'Wskaźnik obrazujący poziom wilgotności roślinności (stres wodny).' },
     RGB:   { formula: '',
              text: 'Kompozycja barwna. Kontrast wyrównany, kolory służą do ogólnej interpretacji obrazu.' }
@@ -66,8 +66,8 @@ const osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const emptyLayer = L.tileLayer('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7').addTo(map);
 
 const text = {
-    NDVI: 'Wysokie wartości często odpowiadają gęstej, zdrowej roślinności.',
-    NDBI: 'Dodatni wynik może wskazywać zabudowę lub odsłoniętą glebę.',
+    NDVI: 'Wyższe wartości często odpowiadają roślinności; interpretacja zależy od pokrycia terenu i daty.',
+    NDBI: 'Dodatni wynik może wskazywać zabudowę, ale też odsłoniętą glebę – porównaj z RGB i NDVI.',
     MNDWI: 'Wskaźnik wspierający rozpoznawanie wód powierzchniowych w terenach zurbanizowanych.',
     NDWI: 'Wskaźnik służący do detekcji zbiorników wodnych.',
     NDMI: 'Wskaźnik obrazujący poziom wilgotności roślinności (stres wodny).',
