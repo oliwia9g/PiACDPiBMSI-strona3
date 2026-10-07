@@ -31,10 +31,6 @@ const INDICES = LAYERS.filter(n => n !== 'RGB');
 const BASEMAPS = {
     'OSM':      { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   attr: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' },
-    'Jasny':    { url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-                  attr: '© OpenStreetMap, © <a href="https://carto.com/attributions">CARTO</a>' },
-    'Ciemny':   { url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-                  attr: '© OpenStreetMap, © <a href="https://carto.com/attributions">CARTO</a>' },
     'Satelita': { url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                   attr: 'Tiles © Esri, Maxar, Earthstar Geographics' },
     'Brak':     null
@@ -51,7 +47,7 @@ const PLACES = [
  
 const $ = s => document.querySelector(s);
 const fmt = v => v.toFixed(2).replace('.', ',').replace('-', '−');
-const tileUrl = (name, z, x, y) => `tiles_new/${name}_new/${z}/${x}/${y}.png`;
+const tileUrl = (name, z, x, y) => `tiles_new_big/${name}_big/${z}/${x}/${y}.png`;
  
 const map = L.map('map', {
     minZoom: cfg.minzoom,
@@ -88,6 +84,7 @@ function change() {
     if (sideBySideControl) map.removeControl(sideBySideControl);
     
     overlay = L.tileLayer('tiles_new_big/' + name + '_big/{z}/{x}/{y}.png', {
+        pane: 'aoiPane',            // warstwa przycinana do granicy obszaru
         tileSize: 256,
         tms: false,
         minZoom: cfg.minzoom,
@@ -119,6 +116,7 @@ function change() {
     
     overlay.on('load', () => document.querySelector('#state').textContent = 'Warstwa ' + name + ' wczytana.');
     overlay.on('tileerror', () => document.querySelector('#state').textContent = 'Błąd wczytywania kafelków.');
+
     afterChange(name);
 }
 
@@ -162,6 +160,54 @@ function setBasemap(key) {
     else baseLayer = b ? L.tileLayer(b.url, { maxZoom: 19, zIndex: 0, attribution: b.attr }).addTo(map) : null;
     document.querySelectorAll('#basemaps .chip').forEach(c => c.classList.toggle('active', c.dataset.key === key));
 }
+
+// przyciecie warstw do granicy obszaru analizy
+map.createPane('aoiPane').style.zIndex = 250;
+let aoiRings = null;   // wszystkie pierscienie granicy: [[ [lng,lat], ... ], ...]
+
+function clipPath(toPoint) {
+    return 'path(evenodd, "' + aoiRings.map(r => 'M' + r.map(c => {
+        const p = toPoint(L.latLng(c[1], c[0]));
+        return p.x.toFixed(1) + ' ' + p.y.toFixed(1);
+    }).join('L') + 'Z').join(' ') + '")';
+}
+
+function updateClip() {
+    if (aoiRings) map.getPane('aoiPane').style.clipPath = clipPath(ll => map.latLngToLayerPoint(ll));
+}
+
+function insideAoi(latlng) {
+    if (!aoiRings) return true;
+    let inside = false;
+    for (const r of aoiRings) for (let i = 0, k = r.length - 1; i < r.length; k = i++) {
+        const xi = r[i][0], yi = r[i][1], xk = r[k][0], yk = r[k][1];
+        if ((yi > latlng.lat) !== (yk > latlng.lat) &&
+            latlng.lng < (xk - xi) * (latlng.lat - yi) / (yk - yi) + xi) inside = !inside;
+    }
+    return inside;
+}
+
+fetch('aoi.geojson').then(r => r.ok ? r.json() : null).then(g => {
+    if (!g) return;
+    const rings = [];
+    const add = geom => {
+        if (!geom) return;
+        if (geom.type === 'Polygon') rings.push(...geom.coordinates);
+        else if (geom.type === 'MultiPolygon') geom.coordinates.forEach(p => rings.push(...p));
+        else if (geom.type === 'GeometryCollection') geom.geometries.forEach(add);
+    };
+    (g.type === 'FeatureCollection' ? g.features : [g]).forEach(f => add(f.type === 'Feature' ? f.geometry : f));
+    if (!rings.length) return;
+    aoiRings = rings;
+    updateClip();
+    scheduleStats();
+}).catch(() => {});
+
+map.on('zoomend viewreset moveend', updateClip);
+// podczas animacji zoomu maska od razu przyjmuje docelowy ksztalt
+map.on('zoomanim', e => {
+    if (aoiRings) map.getPane('aoiPane').style.clipPath = clipPath(ll => map._latLngToNewLayerPoint(ll, e.zoom, e.center));
+});
 
 let leftIdx = null; 
 function blockDragOnSlider() {
@@ -283,6 +329,7 @@ function loadTile(name, z, x, y) {
 }
  
 async function sample(name, latlng) {
+    if (!insideAoi(latlng)) return null;      // poza granica obszaru
     const z = cfg.maxzoom;
     const p = map.project(latlng, z);
     const tx = Math.floor(p.x / 256), ty = Math.floor(p.y / 256);
@@ -387,6 +434,25 @@ async function updateStats() {
         if (token !== statsToken) return;
  
         const thr = INFO[name].thr, STEP = 4;
+
+        // maska granicy obszaru w siatce probek
+        let mask = null, mw = 0;
+        if (aoiRings) {
+            const cv = document.createElement('canvas');
+            mw = cv.width = (x1 - x0 + 1) * 256 / STEP;
+            cv.height = (y1 - y0 + 1) * 256 / STEP;
+            const mc = cv.getContext('2d');
+            mc.beginPath();
+            for (const r of aoiRings) {
+                r.forEach((c, i) => {
+                    const p = map.project([c[1], c[0]], z);
+                    mc[i ? 'lineTo' : 'moveTo']((p.x - x0 * 256) / STEP, (p.y - y0 * 256) / STEP);
+                });
+                mc.closePath();
+            }
+            mc.fill('evenodd');
+            mask = mc.getImageData(0, 0, cv.width, cv.height).data;
+        }
         for (const t of tiles) {
             if (!t.d) continue;
             for (let py = 0; py < 256; py += STEP) {
@@ -395,6 +461,7 @@ async function updateStats() {
                 for (let px = 0; px < 256; px += STEP) {
                     const gx = t.x * 256 + px;
                     if (gx < nw.x || gx > se.x) continue;
+                    if (mask && !mask[((gy - y0 * 256) / STEP * mw + (gx - x0 * 256) / STEP) * 4 + 3]) continue;
                     const i = (py * 256 + px) * 4;
                     if (t.d[i + 3] < 128) continue;
                     const val = colorToValue(name, t.d[i], t.d[i + 1], t.d[i + 2]);
@@ -544,4 +611,4 @@ map.on('moveend', () => { writeHash(); scheduleStats(); });
 readHash();
 setBasemap('OSM');
 ready = true;
-change();   
+change();

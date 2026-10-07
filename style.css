@@ -38,12 +38,7 @@ header {
 
 .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
 
-.logo {
-    width: 38px; height: 38px; flex: none;
-    border-radius: 10px;
-    background: conic-gradient(from 200deg, #006837, #84ca66, #fefebd, #f88e52, #4575b4, #006837);
-    box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 4px 14px rgba(45,212,191,.25);
-}
+.logo { width: 46px; height: 46px; flex: none; display: block; }
 
 h1 { font-size: 19px; margin: 0 0 2px; font-weight: 600; letter-spacing: .2px; }
 header p { margin: 0; font-size: 13px; color: var(--muted); }
@@ -85,6 +80,23 @@ aside h2 {
     margin: 0 0 12px;
     font-weight: 600;
 }
+
+/* ---------- Stopka ---------- */
+footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 24px;
+    padding: 8px 20px;
+    background: var(--panel);
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+    z-index: 1000;
+}
+footer strong { color: var(--text); font-weight: 600; }
+:fullscreen footer { display: none; }
 
 /* ---------- Formularze ---------- */
 label {

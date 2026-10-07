@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="url(#g)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="0" y1="10" x2="0" y2="110">
+      <stop offset="0" stop-color="#4f8dfd"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+  </defs>
+
+  <!-- okrąg z dwoma węzłami -->
+  <path d="M10.2 56 A50 50 0 0 1 109.8 56"/>
+  <path d="M10.2 64 A50 50 0 0 0 109.8 64"/>
+  <circle cx="10" cy="60" r="3"/>
+  <circle cx="110" cy="60" r="3"/>
+
+  <!-- satelita -->
+  <g transform="rotate(-25 58 34)">
+    <rect x="53" y="27" width="10" height="14" rx="1"/>
+    <rect x="30" y="29" width="19" height="10"/>
+    <rect x="67" y="29" width="19" height="10"/>
+    <path d="M49 34 H53 M63 34 H67"/>
+    <path d="M36.3 29 V39 M42.7 29 V39 M30 34 H49" stroke-width="1.6"/>
+    <path d="M73.3 29 V39 M79.7 29 V39 M67 34 H86" stroke-width="1.6"/>
+    <path d="M52 41 H64 A6 6 0 0 1 52 41 Z"/>
+    <path d="M58 47 V49.5"/>
+    <circle cx="58" cy="50.6" r="1.1"/>
+  </g>
+
+  <!-- sygnał -->
+  <path d="M69.7 50.7 A5 5 0 0 1 63.3 53.7"/>
+  <path d="M73.5 52.1 A9 9 0 0 1 61.9 57.5"/>
+  <path d="M77.2 53.4 A13 13 0 0 1 60.6 61.2"/>
+
+  <!-- miasto -->
+  <path d="M28 88 V80 H34 V74 H42 V88"/>
+  <path d="M44 88 V66 L47.5 60 L51 66 V88"/>
+  <path d="M53 88 V77 H60"/>
+  <path d="M60 88 V71 H68 V88 M62.5 71 V68 H65.5 V71"/>
+  <path d="M70 88 V64 H78 V88"/>
+  <path d="M80 88 V74 H85 V79 H91 V88"/>
+
+  <!-- siatka terenu -->
+  <path d="M18.6 88 H101.4"/>
+  <path d="M25.5 96 H94.5 M60 88 V109.5 M44 88 L35 103 M76 88 L85 103 M40 103 H80" stroke-width="2"/>
+</svg>
