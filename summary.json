@@ -1,46 +1,109 @@
 {
-  "product": "LC08_L1TP_188025_20130807_20170503_01_T1",
-  "date": "2013-08-07",
+  "product": "Sentinel-2 L1C",
+  "date": "2026-09-30",
+  "source": "Copernicus Browser, eksport TIFF 32-bit float (reflektancja)",
+  "files": {
+    "B02": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B02_(Raw).tiff",
+    "B03": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B03_(Raw).tiff",
+    "B04": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B04_(Raw).tiff",
+    "B08": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B08_(Raw).tiff",
+    "B11": "2026-09-30-00_00_2026-09-30-23_59_Sentinel-2_L1C_B11_(Raw).tiff"
+  },
   "shape": [
-    1583,
-    1982
+    2229,
+    2500
   ],
-  "crs": "EPSG:32634",
-  "inside_pixels": 1729364,
-  "valid_pixels": 1729266,
+  "crs": "EPSG:4326",
+  "scale_factor": 1.0,
+  "add_offset": 0.0,
+  "nodata": -9999.0,
+  "inside_pixels": 2555240,
+  "valid_pixels": 2554988,
+  "rejected_fill": 0,
+  "rejected_out_of_range": 252,
+  "quality_mask": "granica AOI; odrzucone: wypełnienie (0 we wszystkich kanałach), NaN, reflektancja poza (0, 1]. Brak warstwy chmur w danych wejściowych.",
+  "index_bands": {
+    "NDVI": [
+      "B08",
+      "B04"
+    ],
+    "NDBI": [
+      "B11",
+      "B08"
+    ],
+    "MNDWI": [
+      "B03",
+      "B11"
+    ],
+    "NDWI": [
+      "B03",
+      "B08"
+    ],
+    "NDMI": [
+      "B08",
+      "B11"
+    ]
+  },
   "indices": {
     "NDVI": {
-      "count": 1729266,
-      "min": -1.1052632331848145,
-      "max": 1.0062015056610107,
-      "mean": 0.6179337501525879,
-      "median": 0.6401857733726501,
-      "outside_minus1_plus1": 3
+      "count": 2554988,
+      "min": -0.6369495391845703,
+      "max": 0.9881578683853149,
+      "mean": 0.5008891224861145,
+      "median": 0.5590304136276245,
+      "outside_minus1_plus1": 0
     },
     "NDBI": {
-      "count": 1729266,
-      "min": -1.0,
-      "max": 2.249999761581421,
-      "mean": -0.1904708743095398,
-      "median": -0.19092094898223877,
-      "outside_minus1_plus1": 2
+      "count": 2554988,
+      "min": -0.888955295085907,
+      "max": 0.8934667706489563,
+      "mean": -0.14769238233566284,
+      "median": -0.16483516991138458,
+      "outside_minus1_plus1": 0
     },
     "MNDWI": {
-      "count": 1729266,
-      "min": -0.8733360171318054,
-      "max": 1.0,
-      "mean": -0.4895915985107422,
-      "median": -0.5044873952865601,
+      "count": 2554988,
+      "min": -0.9934426546096802,
+      "max": 0.9002681374549866,
+      "mean": -0.3001486361026764,
+      "median": -0.3208359181880951,
+      "outside_minus1_plus1": 0
+    },
+    "NDWI": {
+      "count": 2554988,
+      "min": -0.9925512075424194,
+      "max": 0.7472000122070312,
+      "mean": -0.4234558939933777,
+      "median": -0.45782265067100525,
+      "outside_minus1_plus1": 0
+    },
+    "NDMI": {
+      "count": 2554988,
+      "min": -0.8934667706489563,
+      "max": 0.888955295085907,
+      "mean": 0.14769238233566284,
+      "median": 0.16483516991138458,
       "outside_minus1_plus1": 0
     }
   },
+  "bounds": [
+    [
+      49.88518923786338,
+      19.520387717367882
+    ],
+    [
+      50.31465548465709,
+      20.35376604486317
+    ]
+  ],
+  "minzoom": 9,
+  "maxzoom": 12,
   "tiles": {
     "RGB": 128,
     "NDVI": 128,
     "NDBI": 128,
-    "MNDWI": 128
-  },
-  "minzoom": 9,
-  "maxzoom": 12,
-  "export_seconds": 5.99
+    "MNDWI": 128,
+    "NDWI": 128,
+    "NDMI": 128
+  }
 }

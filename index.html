@@ -15,7 +15,7 @@
             <div>
                 <h1>Satelitarne wskaźniki pokrycia terenu</h1>
                 <p><span id="city">Kraków</span> • Sentinel-2 • Grupa 3</p>
-            </div>
+                 </div>
         </div>
         <div class="header-actions">
             <button id="share" class="ghost" title="Kopiuj link do bieżącego widoku">Kopiuj link</button>
@@ -38,7 +38,7 @@
 
                 <div id="layer-chips" class="chips" role="group" aria-label="Szybki wybór wskaźnika"></div>
  
-               <label for="layer">Wybór wskaźnika</label>
+                <label for="layer">Wybór wskaźnika</label>
                 <select id="layer">
                     <option>NDVI</option>
                     <option>NDBI</option>
@@ -82,7 +82,7 @@
                 <h2>Statystyki widoku</h2>
                 <canvas id="hist" width="560" height="180" aria-label="Histogram wartości w bieżącym widoku"></canvas>
                 <dl id="stats" class="stats"></dl>
-                <p class="note">Liczone na żywo z pikseli widocznych na mapie. Wartości są przybliżone – odtwarzane z barw kafelków.</p>
+                <p class="note">Liczone na żywo z pikseli widocznych na mapie. Wartości są przybliżone – odtwarzane z barw kafelków. Udziały powyżej progu nie są zweryfikowaną klasyfikacją pokrycia terenu; dokładne wyniki są w statystykach obliczeń.</p>
                 <dl id="summary" class="stats" hidden></dl>
             </section>
  
@@ -95,24 +95,24 @@
             <section>
                 <h2>Ciekawe miejsca</h2>
                 <div id="places" class="places"></div>
-                <button id="reset">Wyśrodkuj mapę</button>
+                <button id="reset">Cały obszar</button>
             </section>
  
             <section>
                 <p class="note"><strong>Kliknij mapę</strong>, aby zobaczyć wartości wszystkich wskaźników w punkcie. Klawisze <kbd>1</kbd>–<kbd>6</kbd> przełączają warstwy, <kbd>F</kbd> włącza pełny ekran.</p>
-                <p class="note">Skala barw obejmuje zakres od −1 do 1. Przezroczyste piksele oznaczają brak ważnych obserwacji (np. chmury lub brak danych).</p>
-                <p class="note"><a href="summary.json">Statystyki obliczeń</a></p>
+                <p class="note">Skala barw obejmuje zakres od −1 do 1. Przezroczyste piksele oznaczają brak ważnych obserwacji (np. chmury lub brak danych). Kafelki mają zoom 9–12; większe zbliżenie tylko powiększa piksele źródłowe.</p>
+                <p class="note" id="summary-note"><a id="summary-link" href="summary.json">Statystyki obliczeń</a></p>
             </section>
         </aside>
     </main>
  
     <footer>
-        <span><strong>Dane satelitarne:</strong> Sentinel-2 (program Copernicus, ESA) – zawiera zmodyfikowane dane Copernicus Sentinel. Wskaźniki: opracowanie własne.</span>
+        <span><strong>Dane:</strong> <span id="scene-foot">Sentinel-2</span> – dane Copernicus Sentinel. Wskaźniki, kafelki i mapa: opracowanie własne.</span>
         <span><strong>Podkłady:</strong> © OpenStreetMap, © Esri</span>
     </footer>
  
     <script src="vendor/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/digidem/leaflet-side-by-side/leaflet-side-by-side.min.js"></script>
+    <script src="vendor/leaflet-side-by-side.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
