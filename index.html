@@ -9,50 +9,95 @@
 </head>
 <body>
     <header>
-        <div>
-            <h1>Kraków i okolice: Wskaźniki pokrycia terenu</h1>
-            <p>Laboratorium geoinformatyki • Analiza zdjęć satelitarnych</p>
+        <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+                <h1>Kraków i okolice: Wskaźniki pokrycia terenu</h1>
+                <p>Laboratorium geoinformatyki • Analiza zdjęć satelitarnych</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="share" class="ghost" title="Kopiuj link do bieżącego widoku">Kopiuj link</button>
+            <button id="fullscreen" class="ghost" title="Tryb pełnoekranowy (F)">Pełny ekran</button>
         </div>
     </header>
-
+ 
     <main>
         <div id="map" aria-label="Interaktywna mapa wskaźników"></div>
+ 
         <aside>
-            <h2>Warstwa wynikowa</h2>
-            
-            <label for="layer">Wybór wskaźnika</label>
-            <select id="layer">
-                <option>NDVI</option>
-                <option>NDBI</option>
-                <option>MNDWI</option>
-                <option>NDWI</option>
-                <option>NDMI</option>
-                <option>RGB</option>
-            </select>
-            
-            <label for="opacity">Przezroczystość warstwy</label>
-            <input id="opacity" type="range" min="0" max="1" step="0.05" value="1">
-            
-            <div id="legend">
-                <div id="ramp" class="ramp"></div>
-                <div class="ticks">
-                    <span>−1</span>
-                    <span>0</span>
-                    <span>1</span>
+            <section>
+                <h2>Warstwa wynikowa</h2>
+                <div id="layer-chips" class="chips" role="group" aria-label="Szybki wybór wskaźnika"></div>
+ 
+                <label for="layer">Wybór wskaźnika</label>
+                <select id="layer">
+                    <option>NDVI</option>
+                    <option>NDBI</option>
+                    <option>MNDWI</option>
+                    <option>NDWI</option>
+                    <option>NDMI</option>
+                    <option>RGB</option>
+                </select>
+ 
+                <label for="compare">Lewa strona suwaka</label>
+                <select id="compare">
+                    <option value="base">Podkład mapowy</option>
+                    <option value="off">Bez suwaka (cała warstwa)</option>
+                    <option value="NDVI">NDVI</option>
+                    <option value="NDBI">NDBI</option>
+                    <option value="MNDWI">MNDWI</option>
+                    <option value="NDWI">NDWI</option>
+                    <option value="NDMI">NDMI</option>
+                    <option value="RGB">RGB</option>
+                </select>
+ 
+                <label for="opacity">Przezroczystość warstwy <output id="opacity-out">100%</output></label>
+                <input id="opacity" type="range" min="0" max="1" step="0.05" value="1">
+ 
+                <div id="legend">
+                    <div class="ramp-wrap">
+                        <div id="ramp" class="ramp"></div>
+                        <div id="probe-mark" hidden></div>
+                    </div>
+                    <div class="ticks">
+                        <span>−1</span><span>−0,5</span><span>0</span><span>0,5</span><span>1</span>
+                    </div>
                 </div>
-            </div>
-            
-            <p id="explain"></p>
-            <button id="reset">Wyśrodkuj mapę</button>
-            <p id="state">Wczytywanie mapy…</p>
-            
-            <hr>
-            <p class="note">Skala barw obejmuje zakres od −1 do 1. Przezroczyste piksele oznaczają brak ważnych obserwacji (np. chmury lub brak danych).</p>
-            <p class="note"><strong>Podkład (lewa strona):</strong> OpenStreetMap.<br><strong>Warstwa (prawa strona):</strong> Dane satelitarne.</p>
-            <p class="note"><a href="summary.json">Statystyki obliczeń</a><br>Źródło danych: USGS/EROS.</p>
+ 
+                <p id="formula" class="formula"></p>
+                <p id="explain"></p>
+                <p id="state">Wczytywanie mapy…</p>
+            </section>
+ 
+            <section id="stats-box">
+                <h2>Statystyki widoku</h2>
+                <canvas id="hist" width="560" height="180" aria-label="Histogram wartości w bieżącym widoku"></canvas>
+                <dl id="stats" class="stats"></dl>
+                <p class="note">Liczone na żywo z pikseli widocznych na mapie. Wartości są przybliżone – odtwarzane z barw kafelków.</p>
+                <dl id="summary" class="stats" hidden></dl>
+            </section>
+ 
+            <section>
+                <h2>Podkład</h2>
+                <div id="basemaps" class="chips" role="group" aria-label="Wybór podkładu"></div>
+                <label class="check"><input id="aoi-toggle" type="checkbox" checked> Granica obszaru analizy</label>
+            </section>
+ 
+            <section>
+                <h2>Ciekawe miejsca</h2>
+                <div id="places" class="places"></div>
+                <button id="reset">Wyśrodkuj mapę</button>
+            </section>
+ 
+            <section>
+                <p class="note"><strong>Kliknij mapę</strong>, aby zobaczyć wartości wszystkich wskaźników w punkcie. Klawisze <kbd>1</kbd>–<kbd>6</kbd> przełączają warstwy, <kbd>F</kbd> włącza pełny ekran.</p>
+                <p class="note">Skala barw obejmuje zakres od −1 do 1. Przezroczyste piksele oznaczają brak ważnych obserwacji (np. chmury lub brak danych).</p>
+                <p class="note"><a href="summary.json">Statystyki obliczeń</a><br>Źródło danych: USGS/EROS.</p>
+            </section>
         </aside>
     </main>
-
+ 
     <script src="vendor/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/digidem/leaflet-side-by-side/leaflet-side-by-side.min.js"></script>
     <script src="script.js"></script>
