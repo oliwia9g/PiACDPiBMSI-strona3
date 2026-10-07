@@ -12,15 +12,15 @@ const cfg = {
 };
 
 const INFO = {
-    NDVI:  { formula: 'NDVI = (NIR − RED) / (NIR + RED)',       thr: 0.4, thrLabel: 'gęsta roślinność (> 0,4)',
-             text: 'Wysokie wartości często odpowiadają gęstej, zdrowej roślinności.' },
-    NDBI:  { formula: 'NDBI = (SWIR1 − NIR) / (SWIR1 + NIR)',   thr: 0,   thrLabel: 'zabudowa / goła gleba (> 0)',
-             text: 'Dodatni wynik może wskazywać zabudowę lub odsłoniętą glebę.' },
-    MNDWI: { formula: 'MNDWI = (GREEN − SWIR1) / (GREEN + SWIR1)', thr: 0, thrLabel: 'woda (> 0)',
+    NDVI:  { formula: 'NDVI = (B08 − B04) / (B08 + B04)',       thr: 0.5, thrLabel: 'piksele z NDVI > 0,5',
+             text: 'Wyższe wartości często odpowiadają roślinności; interpretacja zależy od pokrycia terenu i daty.' },
+    NDBI:  { formula: 'NDBI = (B11 − B08) / (B11 + B08)',   thr: 0,   thrLabel: 'piksele z NDBI > 0',
+             text: 'Dodatni wynik może wskazywać zabudowę, ale też odsłoniętą glebę – porównaj z RGB i NDVI.' },
+    MNDWI: { formula: 'MNDWI = (B03 − B11) / (B03 + B11)', thr: 0, thrLabel: 'piksele z MNDWI > 0',
              text: 'Wskaźnik wspierający rozpoznawanie wód powierzchniowych w terenach zurbanizowanych.' },
-    NDWI:  { formula: 'NDWI = (GREEN − NIR) / (GREEN + NIR)',   thr: 0,   thrLabel: 'woda (> 0)',
+    NDWI:  { formula: 'NDWI = (B03 − B08) / (B03 + B08)',   thr: 0,   thrLabel: 'piksele z NDWI > 0',
              text: 'Wskaźnik służący do detekcji zbiorników wodnych.' },
-    NDMI:  { formula: 'NDMI = (NIR − SWIR1) / (NIR + SWIR1)',   thr: 0.2, thrLabel: 'wysoka wilgotność (> 0,2)',
+    NDMI:  { formula: 'NDMI = (B08 − B11) / (B08 + B11)',   thr: 0.2, thrLabel: 'piksele z NDMI > 0,2',
              text: 'Wskaźnik obrazujący poziom wilgotności roślinności (stres wodny).' },
     RGB:   { formula: '',
              text: 'Kompozycja barwna. Kontrast wyrównany, kolory służą do ogólnej interpretacji obrazu.' }
@@ -41,13 +41,13 @@ const PLACES = [
     { name: 'Kombinat N. Huta', hint: 'przemysł • NDBI',   ll: [50.0780, 20.1000], z: 13, layer: 'NDBI' },
     { name: 'Las Wolski',       hint: 'las • NDVI',        ll: [50.0550, 19.8500], z: 14, layer: 'NDVI' },
     { name: 'Zalew Kryspinów',  hint: 'woda • MNDWI',      ll: [50.0470, 19.7900], z: 14, layer: 'MNDWI' },
-    { name: 'Zalew Bagry',      hint: 'woda • NDWI',       ll: [50.0360, 19.9900], z: 14, layer: 'NDWI' },
-    { name: 'Dolina Prądnika',  hint: 'wilgotność • NDMI', ll: [50.2100, 19.8300], z: 13, layer: 'NDMI' }
+    { name: 'Zalew Bagry',      hint: 'woda • MNDWI',      ll: [50.0360, 19.9900], z: 14, layer: 'MNDWI' },
+    { name: 'Dolina Prądnika',  hint: 'roślinność • NDVI', ll: [50.2100, 19.8300], z: 13, layer: 'NDVI' }
 ];
  
 const $ = s => document.querySelector(s);
 const fmt = v => v.toFixed(2).replace('.', ',').replace('-', '−');
-const tileUrl = (name, z, x, y) => `tiles_new_big/${name}_big/${z}/${x}/${y}.png`;
+const tileUrl = (name, z, x, y) => `tiles/${name}/${z}/${x}/${y}.png`;
  
 const map = L.map('map', {
     minZoom: cfg.minzoom,
@@ -66,8 +66,8 @@ const osmLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const emptyLayer = L.tileLayer('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7').addTo(map);
 
 const text = {
-    NDVI: 'Wysokie wartości często odpowiadają gęstej, zdrowej roślinności.',
-    NDBI: 'Dodatni wynik może wskazywać zabudowę lub odsłoniętą glebę.',
+    NDVI: 'Wyższe wartości często odpowiadają roślinności; interpretacja zależy od pokrycia terenu i daty.',
+    NDBI: 'Dodatni wynik może wskazywać zabudowę, ale też odsłoniętą glebę – porównaj z RGB i NDVI.',
     MNDWI: 'Wskaźnik wspierający rozpoznawanie wód powierzchniowych w terenach zurbanizowanych.',
     NDWI: 'Wskaźnik służący do detekcji zbiorników wodnych.',
     NDMI: 'Wskaźnik obrazujący poziom wilgotności roślinności (stres wodny).',
@@ -83,7 +83,7 @@ function change() {
     if (overlay) map.removeLayer(overlay);
     if (sideBySideControl) map.removeControl(sideBySideControl);
     
-    overlay = L.tileLayer('tiles_new_big/' + name + '_big/{z}/{x}/{y}.png', {
+    overlay = L.tileLayer('tiles/' + name + '/{z}/{x}/{y}.png', {
         pane: 'aoiPane',            // warstwa przycinana do granicy obszaru
         tileSize: 256,
         tms: false,
@@ -519,10 +519,31 @@ function renderSummary() {
     const rows = s && typeof s === 'object'
         ? Object.entries(s).filter(([, v]) => typeof v === 'number').slice(0, 8) : [];
     dl.hidden = !rows.length;
+    const PL = { count: 'Ważne piksele', min: 'Minimum', max: 'Maksimum', mean: 'Średnia',
+                 median: 'Mediana', outside_minus1_plus1: 'Poza [−1, 1]' };
     dl.innerHTML = rows.map(([k, v]) =>
-        `<dt>${k} (cały obszar)</dt><dd>${Number.isInteger(v) ? v.toLocaleString('pl-PL') : v.toFixed(3).replace('.', ',')}</dd>`).join('');
+        `<dt>${PL[k] || k} (cały obszar)</dt><dd>${Number.isInteger(v) ? v.toLocaleString('pl-PL') : v.toFixed(3).replace('.', ',')}</dd>`).join('');
 }
-fetch('summary.json').then(r => r.ok ? r.json() : null).then(j => { summary = j; renderSummary(); }).catch(() => {});
+// zostawia w panelu tylko te warstwy, dla ktorych summary.json wymienia kafelki
+function limitLayers(avail) {
+    document.querySelectorAll('#layer option, #compare option').forEach(o => {
+        if (LAYERS.includes(o.value) && !avail.includes(o.value)) o.remove();
+    });
+    document.querySelectorAll('#layer-chips .chip').forEach(c => { if (!avail.includes(c.dataset.key)) c.remove(); });
+    document.querySelectorAll('#places .place').forEach(b => { if (!avail.includes(b.dataset.layer)) b.remove(); });
+    if (!avail.includes(overlay && $('#layer').value)) { $('#layer').selectedIndex = 0; change(); }
+}
+fetch('summary.json').then(r => r.ok ? r.json() : null).then(j => {
+    summary = j;
+    // produkt i data sceny w naglowku i stopce pochodza z summary.json
+    if (j && j.product && /^\d{4}-\d{2}-\d{2}$/.test(j.date || '')) {
+        const d = new Date(j.date + 'T12:00:00').toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+        if ($('#scene')) $('#scene').textContent = `${j.product.replace(/ L\d[AC]$/, '')} • scena z ${d}`;
+        if ($('#scene-foot')) $('#scene-foot').textContent = `${j.product}, scena z ${d}`;
+    }
+    if (j && j.tiles && typeof j.tiles === 'object') limitLayers(Object.keys(j.tiles));
+    renderSummary();
+}).catch(() => {});
  
 // granice obszaru
 let aoiLayer = null;
@@ -544,7 +565,10 @@ function chip(parent, key, onClick) {
     parent.appendChild(b);
 }
  
-function setLayer(name) { $('#layer').value = name; change(); }
+function setLayer(name) {
+    if (![...$('#layer').options].some(o => o.value === name)) return;   // warstwa bez kafelkow
+    $('#layer').value = name; change();
+}
  
 LAYERS.forEach(n => chip($('#layer-chips'), n, () => setLayer(n)));
 Object.keys(BASEMAPS).forEach(k => chip($('#basemaps'), k, () => setBasemap(k)));
@@ -553,6 +577,7 @@ if ($('#places')) PLACES.forEach(p => {
     const b = document.createElement('button');
     b.className = 'place';
     b.type = 'button';
+    b.dataset.layer = p.layer;
     b.innerHTML = `${p.name}<small>${p.hint}</small>`;
     b.addEventListener('click', () => { setLayer(p.layer); map.flyTo(p.ll, p.z, { duration: 1.2 }); });
     $('#places').appendChild(b);
